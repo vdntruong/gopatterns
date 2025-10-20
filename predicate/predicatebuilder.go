@@ -1,8 +1,14 @@
 package main
 
+import "fmt"
+
 type Process struct {
 	ID    int
 	Title string
+}
+
+func (p *Process) String() string {
+	return fmt.Sprintf("{ID: %d, Title: %s}", p.ID, p.Title)
 }
 
 type ProcessPredicate func(*Process) bool

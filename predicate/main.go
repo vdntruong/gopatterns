@@ -12,5 +12,5 @@ func main() {
 		log.Println("No results found")
 		return
 	}
-	log.Println("Result:", result)
+	log.Printf("Result: %+v", result)
 }
