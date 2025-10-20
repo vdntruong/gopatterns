@@ -18,3 +18,28 @@ func ByID(id int) ProcessPredicate {
 		return p.ID == id
 	}
 }
+
+type ProcessManager struct {
+	processes []*Process
+}
+
+func CreateProcessManager() *ProcessManager {
+	return &ProcessManager{
+		// default processes
+		processes: []*Process{
+			{ID: 1, Title: "Go"},
+			{ID: 2, Title: "Python"},
+			{ID: 3, Title: "C++"},
+		},
+	}
+}
+
+func (pm *ProcessManager) Find(predicate ProcessPredicate) []*Process {
+	var result []*Process
+	for _, p := range pm.processes {
+		if predicate(p) {
+			result = append(result, p)
+		}
+	}
+	return result
+}
