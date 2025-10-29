@@ -16,6 +16,7 @@ func main() {
 	defaultClient := NewClientWithOptions()
 	log.Printf("Default Client: Timeout=%v, Retries=%d", defaultClient.Timeout, defaultClient.Retries)
 
+	// Apply options to the client
 	defaultClient.Apply(
 		WithLogger(log.New(log.Writer(), "MyApp: ", log.LstdFlags)),
 	)
