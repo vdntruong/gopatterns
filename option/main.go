@@ -1,10 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"os"
 	"time"
 )
 
+// Client represents the original simple example
 type Client struct {
 	Logger  *log.Logger
 	Timeout time.Duration
@@ -12,20 +15,60 @@ type Client struct {
 }
 
 func main() {
-	// Create a client with default settings
-	defaultClient := NewClientWithOptions()
-	log.Printf("Default Client: Timeout=%v, Retries=%d", defaultClient.Timeout, defaultClient.Retries)
+	printLine()
+	fmt.Println("  FUNCTIONAL OPTIONS PATTERN IN GO")
+	printLine()
 
-	// Apply options to the client
-	defaultClient.Apply(
-		WithLogger(log.New(log.Writer(), "MyApp: ", log.LstdFlags)),
-	)
-	defaultClient.Logger.Println("Applied logger")
+	// First, demonstrate common approaches and their problems
+	DemoCommonApproaches()
 
-	// Create a client with custom timeout and retries
-	customClient := NewClientWithOptions(
-		WithTimeout(30*time.Second),
-		WithRetries(5),
+	printLine()
+	fmt.Println()
+
+	// Then show the option pattern solution
+	DemoOptionPattern()
+
+	printLine()
+	fmt.Println()
+
+	// Finally, show the advanced features
+	DemoAdvancedFeatures()
+
+	printLine()
+	fmt.Println("  DEMO COMPLETED")
+	printLine()
+}
+
+// DemoAdvancedFeatures shows how to use functional options to configure a server.
+func DemoAdvancedFeatures() {
+	fmt.Println("=== Advanced Features ===")
+
+	// Custom logger
+	customLogger := log.New(os.Stdout, "CUSTOM: ", log.Lshortfile)
+
+	server, err := NewServer(
+		WithHost("production.example.com"),
+		WithPort(443),
+		WithTLS("/etc/ssl/cert.pem", "/etc/ssl/key.pem"),
+		WithMaxConnections(1000),
+		WithTimeout(60*time.Second),
+		WithLogger(customLogger),
+		WithMiddleware("cors", "auth", "ratelimit", "logging"),
+		WithReadTimeout(30*time.Second),
+		WithWriteTimeout(30*time.Second),
 	)
-	log.Printf("Custom Client: Timeout=%v, Retries=%d", customClient.Timeout, customClient.Retries)
+
+	if err != nil {
+		fmt.Printf("✗ Error creating server: %v\n", err)
+		return
+	}
+
+	fmt.Println("Production server configuration:")
+	fmt.Println(server)
+	fmt.Println("\nStarting server...")
+	server.Start()
+}
+
+func printLine() {
+	fmt.Println("========================================")
 }
