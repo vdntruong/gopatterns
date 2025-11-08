@@ -1,16 +1,44 @@
 package main
 
-import "log"
+import "fmt"
 
 func main() {
-	pm := CreateProcessManager()
+	printLine()
+	fmt.Println("  PREDICATE PATTERN IN GO")
+	printLine()
 
-	title := "Go"
-	result := pm.Find(ByTitle(title))
+	// First, demonstrate common approaches and their problems
+	DemoCommonApproaches()
 
-	if len(result) == 0 {
-		log.Println("No results found")
-		return
-	}
-	log.Printf("Result: %+v", result)
+	printLine()
+	fmt.Println()
+
+	// Show the generic predicate pattern solution
+	DemoPredicatePattern()
+
+	printLine()
+	fmt.Println()
+
+	// Generic predicates with simple types
+	DemoGenericPredicates()
+
+	printLine()
+	fmt.Println()
+
+	// Predicate Builder pattern
+	DemoPredicateBuilder()
+
+	printLine()
+	fmt.Println()
+
+	// Specification pattern variant
+	DemoSpecificationPattern()
+
+	printLine()
+	fmt.Println("  DEMO COMPLETED")
+	printLine()
+}
+
+func printLine() {
+	fmt.Println("========================================")
 }
